@@ -1,0 +1,204 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+	<Frame name="QuickMessageFrame" parent="UIParent" movable="true" enableMouse="true">
+		<Size x="300" y="416" />
+		<Anchors>
+			<Anchor realtivePoint="" realtiveTo="" point="CENTER">
+				<Offset y="122" />
+			</Anchor>
+		</Anchors>
+		<TitleRegion setAllPoints="true" />
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11" />
+			</BackgroundInsets>
+		</Backdrop>
+		<Layers>
+			<Layer>
+				<FontString inherits="GameFontNormal" text="快速发送消息">
+					<Anchors>
+						<Anchor point="TOP" relativeTo="QuickMessageFrame">
+							<Offset y="-20" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString inherits="GameFontNormal" text="需要发送的消息">
+					<Anchors>
+						<Anchor point="TOP" relativeTo="QuickMessageFrame">
+							<Offset y="-55" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="QMButtonInit" inherits="OptionsButtonTemplate" text="初始化">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="12" y="-16" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:RegisterForClicks(
+						"LeftButtonUp"
+						)
+					</OnLoad>
+					<OnClick>
+						-- the function header is function(self, button)
+						self:OnClick();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="QMButtonHide" inherits="OptionsButtonTemplate" text="隐藏">
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-12" y="-16" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:RegisterForClicks(
+						"LeftButtonUp"
+						)
+					</OnLoad>
+					<OnClick>
+						-- the function header is function(self, button)
+						self:OnClick();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<EditBox name="QMEditBoxInputMessage" enableMouse="true" font="GameFontNormal" multiLine="true" autoFocus="false">
+				<Size>
+					<AbsDimension x="210" y="124" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOP" relativeTo="QuickMessageFrame">
+						<Offset x="-1" y="-89" />
+					</Anchor>
+					<Anchor point="BOTTOM" relativeTo="QuickMessageFrame">
+						<Offset x="-1" y="203" />
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border">
+					<EdgeSize val="14" />
+					<Color r="0" g="0" b="0" />
+					<BorderColor r="0.1" g="0.1" b="0.1" />
+				</Backdrop>
+				<HitRectInsets>
+					<AbsInset left="1" right="1" top="1" bottom="1" />
+				</HitRectInsets>
+			</EditBox>
+			<Button name="QMButtonSendDaJiao" inherits="OptionsButtonTemplate" text="发送消息到大脚">
+				<Size>
+					<AbsDimension x="130" y="28" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOP" relativeTo="QMEditBoxInputMessage" relativePoint="BOTTOM">
+						<Offset>
+							<AbsDimension x="0" y="-15" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:RegisterForClicks(
+						"LeftButtonUp"
+						)
+					</OnLoad>
+					<OnClick>
+						-- the function header is function(self, button)
+						self:SendMessage();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="QMButtonSendParty" inherits="OptionsButtonTemplate" text="发送消息到组队">
+				<Size>
+					<AbsDimension x="130" y="28" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOP" relativeTo="QMButtonSendDaJiao" relativePoint="BOTTOM">
+						<Offset>
+							<AbsDimension x="0" y="-15" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:RegisterForClicks(
+						"LeftButtonUp"
+						)
+					</OnLoad>
+					<OnClick>
+						-- the function header is function(self, button)
+						self:SendMessage();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="QMButtonSendYell" inherits="OptionsButtonTemplate" text="发送消息到喊话">
+				<Size>
+					<AbsDimension x="130" y="28" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOP" relativeTo="QMButtonSendParty" relativePoint="BOTTOM">
+						<Offset>
+							<AbsDimension x="0" y="-15" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:RegisterForClicks(
+						"LeftButtonUp"
+						)
+					</OnLoad>
+					<OnClick>
+						-- the function header is function(self, button)
+						self:SendMessage();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="QMButtonSendGeneral" inherits="OptionsButtonTemplate" text="发送消息到综合">
+				<Size>
+					<AbsDimension x="130" y="28" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOP" relativeTo="QMButtonSendYell" relativePoint="BOTTOM">
+						<Offset>
+							<AbsDimension x="0" y="-15" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:RegisterForClicks(
+						"LeftButtonUp"
+						)
+					</OnLoad>
+					<OnClick>
+						-- the function header is function(self, button)
+						self:SendMessage();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				self:RegisterForDrag("LeftButton");
+			</OnLoad>
+			<OnEvent>
+
+			</OnEvent>
+			<OnDragStart>
+				self:StartMoving();
+				self:OnClick();
+			</OnDragStart>
+			<OnDragStop>
+				self:StopMovingOrSizing();
+			</OnDragStop>
+		</Scripts>
+	</Frame>
+</Ui>

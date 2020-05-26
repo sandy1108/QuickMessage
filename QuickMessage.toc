@@ -1,0 +1,13 @@
+## Interface: 11304
+## Title: QuickMessage
+## Notes: Some Message Listener
+## Author: 洛阿神灵木事-炉石旅馆-加丁
+## Version: 1.0.0
+## eMail: sandy1108@163.com
+## Notes-zhCN: 快捷发送组团信息、战场频道监听、聊天提醒等功能
+## Title-zhCN: 快捷消息工具
+
+
+QuickMessage.xml
+QuickMessage.lua
+AutoLeaveBattlefield.lua
