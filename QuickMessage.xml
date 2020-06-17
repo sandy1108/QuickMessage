@@ -1,9 +1,9 @@
 <Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
 	<Frame name="QuickMessageFrame" parent="UIParent" movable="true" enableMouse="true">
-		<Size x="300" y="416" />
+		<Size x="300" y="230" />
 		<Anchors>
 			<Anchor realtivePoint="" realtiveTo="" point="CENTER">
-				<Offset y="122" />
+				<Offset y="215" />
 			</Anchor>
 		</Anchors>
 		<TitleRegion setAllPoints="true" />
@@ -73,14 +73,11 @@
 			</Button>
 			<EditBox name="QMEditBoxInputMessage" enableMouse="true" font="GameFontNormal" multiLine="true" autoFocus="false">
 				<Size>
-					<AbsDimension x="210" y="124" />
+					<AbsDimension x="210" y="100" />
 				</Size>
 				<Anchors>
-					<Anchor point="TOP" relativeTo="QuickMessageFrame">
-						<Offset x="-1" y="-89" />
-					</Anchor>
-					<Anchor point="BOTTOM" relativeTo="QuickMessageFrame">
-						<Offset x="-1" y="203" />
+					<Anchor relativeToPoint="TOP" point="TOP" relativeTo="QuickMessageFrame">
+						<Offset x="0" y="-90" />
 					</Anchor>
 				</Anchors>
 				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border">
@@ -92,98 +89,6 @@
 					<AbsInset left="1" right="1" top="1" bottom="1" />
 				</HitRectInsets>
 			</EditBox>
-			<Button name="QMButtonSendDaJiao" inherits="OptionsButtonTemplate" text="发送消息到大脚">
-				<Size>
-					<AbsDimension x="130" y="28" />
-				</Size>
-				<Anchors>
-					<Anchor point="TOP" relativeTo="QMEditBoxInputMessage" relativePoint="BOTTOM">
-						<Offset>
-							<AbsDimension x="0" y="-15" />
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						self:RegisterForClicks(
-						"LeftButtonUp"
-						)
-					</OnLoad>
-					<OnClick>
-						-- the function header is function(self, button)
-						self:SendMessage();
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="QMButtonSendParty" inherits="OptionsButtonTemplate" text="发送消息到组队">
-				<Size>
-					<AbsDimension x="130" y="28" />
-				</Size>
-				<Anchors>
-					<Anchor point="TOP" relativeTo="QMButtonSendDaJiao" relativePoint="BOTTOM">
-						<Offset>
-							<AbsDimension x="0" y="-15" />
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						self:RegisterForClicks(
-						"LeftButtonUp"
-						)
-					</OnLoad>
-					<OnClick>
-						-- the function header is function(self, button)
-						self:SendMessage();
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="QMButtonSendYell" inherits="OptionsButtonTemplate" text="发送消息到喊话">
-				<Size>
-					<AbsDimension x="130" y="28" />
-				</Size>
-				<Anchors>
-					<Anchor point="TOP" relativeTo="QMButtonSendParty" relativePoint="BOTTOM">
-						<Offset>
-							<AbsDimension x="0" y="-15" />
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						self:RegisterForClicks(
-						"LeftButtonUp"
-						)
-					</OnLoad>
-					<OnClick>
-						-- the function header is function(self, button)
-						self:SendMessage();
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="QMButtonSendGeneral" inherits="OptionsButtonTemplate" text="发送消息到综合">
-				<Size>
-					<AbsDimension x="130" y="28" />
-				</Size>
-				<Anchors>
-					<Anchor point="TOP" relativeTo="QMButtonSendYell" relativePoint="BOTTOM">
-						<Offset>
-							<AbsDimension x="0" y="-15" />
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						self:RegisterForClicks(
-						"LeftButtonUp"
-						)
-					</OnLoad>
-					<OnClick>
-						-- the function header is function(self, button)
-						self:SendMessage();
-					</OnClick>
-				</Scripts>
-			</Button>
 		</Frames>
 		<Scripts>
 			<OnLoad>

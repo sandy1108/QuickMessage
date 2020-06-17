@@ -38,7 +38,7 @@ function AutoLeaveBattlefield:OnEvent(event, text, arg2, ...)
               if text:lower():match(string.lower("。。。"))
                 then 
                   PlaySoundFile("Interface\\AddOns\\!AutoLeaveBattlefield\\media\\" .. sounds[4] ..".ogg")
-                  LeaveBattlefiled()
+                  LeaveBattlefield()
                   printHint(event, text, arg2)
               end
           end

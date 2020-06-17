@@ -5,14 +5,54 @@
 --  @快捷发送消息
 -- ===============================
 
+local buttonHeight = 28
+local buttonOffsetY = -15
+local unitSizeHeight = buttonHeight - buttonOffsetY
+
+local QMButtonPool = { }
+
 local QuickMessageFrame = getglobal("QuickMessageFrame")
 local QMButtonInit = getglobal("QMButtonInit")
 local QMButtonHide = getglobal("QMButtonHide")
-local QMButtonSendDaJiao = getglobal("QMButtonSendDaJiao")
-local QMButtonSendParty = getglobal("QMButtonSendParty")
-local QMButtonSendYell = getglobal("QMButtonSendYell")
-local QMButtonSendGeneral = getglobal("QMButtonSendGeneral")
 local QMEditBoxInputMessage = getglobal("QMEditBoxInputMessage")
+
+local function InitSendButton(buttonNumber, aboveButton, channelObj)
+	local initButton
+	if #QMButtonPool < buttonNumber then
+		-- 需要初始化的按钮数量超过了已存在的按钮数量，故需要加一个按钮
+		local newButton = CreateFrame("Button", nil, QuickMessageFrame, "OptionsButtonTemplate")
+		newButton:SetSize(130, buttonHeight)
+		newButton:SetPoint("TOP", aboveButton, "BOTTOM", 0, buttonOffsetY)
+		newButton:SetText("发送到" .. channelObj.name)
+		-- 保存频道信息在发送按钮中
+		newButton.channelObj = channelObj
+		-- 设置点击事件
+		newButton:SetScript("OnClick", function(self)
+			QMEditBoxInputMessage:ClearFocus()
+			local msg = QMEditBoxInputMessage:getQMEditBoxInputMsgWithRandom()
+			QuickMessageFrame:SendMessageToChannel(msg, channelObj)
+		end)
+		-- 调整对话框大小
+		local frameWidth = QuickMessageFrame:GetWidth()
+		local frameHeight = QuickMessageFrame:GetHeight()
+		QuickMessageFrame:SetSize(frameWidth, frameHeight + unitSizeHeight)
+		QMButtonPool[buttonNumber] = newButton
+		initButton = newButton
+	else
+	    -- 创建好的按钮够用了，不需要再增加
+		initButton = QMButtonPool[buttonNumber]
+		initButton:SetText("发送到" .. channelObj.name)
+		-- 保存频道信息在发送按钮中
+		initButton.channelObj = channelObj
+		-- 设置点击事件
+		initButton:SetScript("OnClick", function(self)
+			QMEditBoxInputMessage:ClearFocus()
+			local msg = QMEditBoxInputMessage:getQMEditBoxInputMsgWithRandom()
+			QuickMessageFrame:SendMessageToChannel(msg, channelObj)
+		end)
+	end
+	return initButton
+end
 
 function QuickMessageFrame:OnClick()
 	QMEditBoxInputMessage:ClearFocus()
@@ -20,56 +60,30 @@ end
 
 function QMButtonInit:OnClick()
 	print("QMButtonInit:OnClick")
+	local aboveFrame = QMEditBoxInputMessage
+	local channelYell = {
+		id = -1,
+		name = "喊话",
+		isDisabled = false
+    }
+	aboveFrame = InitSendButton(1, aboveFrame, channelYell)
+	local channelSay = {
+		id = -2,
+		name = "说话",
+		isDisabled = false
+	}
+	aboveFrame = InitSendButton(2, aboveFrame, channelSay)
+	local staticChannelCount = 2 -- 这里是指上面的喊话和说话这两种消息方式是固定的，所以后面的InitSendButton里携带的序号就是基础上再递增
 	local channelObjList = QuickMessageFrame:GetJoinedChannels()
+	for i=1, #channelObjList do
+		local _channelObj = channelObjList[i]
+		aboveFrame = InitSendButton(staticChannelCount + i, aboveFrame, _channelObj)
+	end
 end
 
 function QMButtonHide:OnClick()
 	print("QMButtonHide:OnClick")
 	QuickMessageFrame:Hide()
-end
-
-function QuickMessageFrame:SendAllMessage(originFrame, button)
-	print("SendAllMessage")
-	local msg = QMEditBoxInputMessage:GetText()
-	--SendMessageToChannelName(msg, "大脚世界频道")
-	--SendMessageToChannelName(msg, "寻求组队")
-	--SendMessageToChannelName(msg, "综合")
-	--SendChatMessage(msg, "CHANNEL", nil, 7); 
-	--QMButtonSend:SendMessageToEveryChannel(msg)
-	--QMButtonSend:SendMessageToStaticChannelList(msg)
-	QMEditBoxInputMessage:ClearFocus()
-end
-
-function QMButtonSendDaJiao:SendMessage(originFrame, button)
-	print("QMButtonSendDaJiao:SendMessage")
-	local msg = QMEditBoxInputMessage:getQMEditBoxInputMsgWithRandom()
-	SendChatMessage(msg, "CHANNEL", nil, 7)
-	--QuickMessageFrame:SendMessageToChannelName(msg, "大脚世界频道")
-	QMEditBoxInputMessage:ClearFocus()
-end
-
-function QMButtonSendParty:SendMessage(originFrame, button)
-	print("QMButtonSendParty:SendMessage")
-	local msg = QMEditBoxInputMessage:getQMEditBoxInputMsgWithRandom()
-	SendChatMessage(msg, "CHANNEL", nil, 6)
-	--QuickMessageFrame:SendMessageToChannelName(msg, "寻求组队")
-	QMEditBoxInputMessage:ClearFocus()
-end
-
-function QMButtonSendYell:SendMessage(originFrame, button)
-	print("QMButtonSendYell:SendMessage")
-	local msg = QMEditBoxInputMessage:getQMEditBoxInputMsgWithRandom()
-	SendChatMessage(msg, "YELL"); 
-	QMEditBoxInputMessage:ClearFocus()
-end
-
-function QMButtonSendGeneral:SendMessage(originFrame, button)
-	print("QMButtonSendGeneral:SendMessage")
-	local msg = QMEditBoxInputMessage:getQMEditBoxInputMsgWithRandom()
-	SendChatMessage(msg, "CHANNEL", nil, 2)
-	--QuickMessageFrame:SendMessageToChannelName(msg, "综合")
-	--QuickMessageFrame:SendMessageToEveryChannel(msg)
-	QMEditBoxInputMessage:ClearFocus()
 end
 
 function QMEditBoxInputMessage:getQMEditBoxInputMsgWithRandom()
@@ -79,41 +93,21 @@ function QMEditBoxInputMessage:getQMEditBoxInputMsgWithRandom()
 	return msg
 end
 
-function QuickMessageFrame:SendMessageToStaticChannelList(msg)
-	local channelObjList = QMButtonSend:GetJoinedChannels()
-	SendChatMessage(msg, "CHANNEL", nil, 2); 
-	SendChatMessage(msg, "CHANNEL", nil, 5); 
-	SendChatMessage(msg, "CHANNEL", nil, 11); 
-	SendChatMessage(msg, "CHANNEL", nil, 3); 
-end
-
-function QuickMessageFrame:SendMessageToEveryChannel(msg)
-	local channelObjList = self:GetJoinedChannels()
-	for i=1, #channelObjList do
-		local _channelObj = channelObjList[i]
-		if (channelObjList~=nil) then
-			print("channelName:".._channelObj.name.." channelId:".._channelObj.id)
-			if (_channelObj.name:lower():match(string.lower("大脚世界频道"))) then
-				SendChatMessage(msg, "CHANNEL", nil, channelObjList.id)
-				print("QMEditBoxInputMessage_SendMessage To: " .. channelObjList.name)
-			elseif (_channelObj.name:lower():match(string.lower("寻求组队"))) then
-				SendChatMessage(msg, "CHANNEL", nil, channelObjList.id)
-				print("QMEditBoxInputMessage_SendMessage To: " .. channelObjList.name)
-			elseif (_channelObj.name:lower():match(string.lower("综合"))) then
-				SendChatMessage(msg, "CHANNEL", nil, channelObjList.id)
-				print("QMEditBoxInputMessage_SendMessage To: " .. channelObjList.name)
-			else 
-				print("QMEditBoxInputMessage_SendMessage failed: " .. _channelObj.name)	
-			end 
-		end
-	end
-end
-
-function QuickMessageFrame:SendMessageToChannelName(msg, channel)
-	local index, channelName, _, __ = GetChannelName(channel) -- It finds General is a channel at index 1
+function QuickMessageFrame:SendMessageToChannel(msg, channel)
+	local index = channel.id
 	print("QMEditBoxInputMessage_SendMessage To index: " .. index)
 	if (index~=nil and index~=0) then 
-		SendChatMessage(msg, "CHANNEL", nil, index); 
+		if (not channel.isDisabled) then
+			if (channel.id == -1) then
+				-- 喊话
+				SendChatMessage(msg, "YELL");
+			elseif (channel.id == -2) then
+				-- 说话
+				SendChatMessage(msg, "SAY");
+			else 
+				SendChatMessage(msg, "CHANNEL", nil, index);
+			end
+		end
 	end
 end
 
